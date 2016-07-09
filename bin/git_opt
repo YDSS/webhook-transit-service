@@ -1,0 +1,42 @@
+#!/bin/sh
+echo 'git_opt starting...'
+# root
+HOME=/home/ydss/
+# root of apps those running
+APPS_ROOT=${HOME}'apps/'
+# root of git repository directory
+GIT_REPO_ROOT=${HOME}'git-repo'
+# name of git repo which needs update
+GIT_REPO=${GIT_REPO_ROOT}'/'
+RESTART='0'
+
+while getopts 'd:r' args
+do
+    case $args in
+        d) 
+            GIT_REPO=${GIT_REPO}${OPTARG} 
+            echo 'repo name: '${OPTARG} 
+            ;;
+        r) RESTART='1'
+    esac
+done
+
+echo 'enter git repo'${GIT_REPO}
+cd $GIT_REPO
+echo 'start git pull...'
+# git pull
+echo 'git pull done!'
+
+# restart server
+if [ $RESTART = '1' ];then
+    if [ -e ./pid ];then
+        # find the file stores pid, kill the process
+        PID=`cat ./pid`
+        kill -9 $PID
+        # restart  
+        npm run dev
+    else
+        echo 'start server failed, cause not find pid file'
+        exit 1
+    fi
+fi
