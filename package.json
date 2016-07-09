@@ -1,0 +1,27 @@
+{
+  "name": "webhook-transit-service",
+  "version": "1.0.0",
+  "description": "A koa service which receive github webhook post request and then update related git repository",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YDSS/webhook-transit-service.git"
+  },
+  "keywords": [
+    "koa",
+    "webhook"
+  ],
+  "author": "YDSS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/YDSS/webhook-transit-service/issues"
+  },
+  "homepage": "https://github.com/YDSS/webhook-transit-service#readme",
+  "dependencies": {
+    "koa": "^1.2.0",
+    "koa-body": "^1.4.0"
+  }
+}
