@@ -1,21 +1,28 @@
 #!/bin/sh
+echo 'date: '`date +'%Y-%m-%d %H:%M:%S'`
 echo 'git_opt starting...'
 # root
-HOME=/home/ydss/
+HOME=/home/ydss
+#HOME=~
 # root of git repository directory
-GIT_REPO_ROOT=${HOME}'git-repo'
+GIT_REPO_ROOT=${HOME}'/git-repo'
+#GIT_REPO_ROOT=${HOME}'/tmp'
 # name of git repo which needs update
 GIT_REPO=${GIT_REPO_ROOT}'/'
-RESTART='0'
+# flag, update node_modules
+NPM_UPDATE=
+# flag, restart server
+RESTART=
 
-while getopts 'd:r' args
+while getopts 'd:rn' args
 do
     case $args in
         d) 
             GIT_REPO=${GIT_REPO}${OPTARG} 
             echo 'repo name: '${OPTARG} 
             ;;
-        r) RESTART='1'
+        r) RESTART='1' ;;
+        n) NPM_UPDATE='1' ;;
     esac
 done
 
@@ -25,8 +32,14 @@ echo 'start git pull...'
 git pull
 echo 'git pull done!'
 
+# update node_modules
+if [[ $NPM_UPDATE = '1' ]];then
+    echo 'start update node_modules...'
+    npm i
+    echo 'update done!'
+fi
 # restart server
-if [ $RESTART = '1' ];then
+if [[ $RESTART = '1' ]];then
     if [ -e ./pid ];then
         # find the file stores pid, kill the process
         PID=`cat ./pid`
@@ -38,3 +51,5 @@ if [ $RESTART = '1' ];then
         exit 1
     fi
 fi
+# new line
+echo 

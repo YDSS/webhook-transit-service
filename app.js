@@ -54,7 +54,7 @@ app.use(function* (next) {
         let stdout = yield execFile(
             path.join(__dirname, './bin/git_opt'), 
             // no need space between option and value
-            [`-d${gitRepoName}`]
+            [`-d${gitRepoName}`, '-n']
         );
         console.log(stdout.join('\n'));
         this.body = 'update success';
