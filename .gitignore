@@ -1,4 +1,8 @@
 .DS_Store
 node_modules/
 *.swp
+.DS_Store
 pid
+node_modules/
+*.swp
+*.out
