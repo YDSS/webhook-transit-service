@@ -2,8 +2,6 @@
 echo 'git_opt starting...'
 # root
 HOME=/home/ydss/
-# root of apps those running
-APPS_ROOT=${HOME}'apps/'
 # root of git repository directory
 GIT_REPO_ROOT=${HOME}'git-repo'
 # name of git repo which needs update
@@ -24,7 +22,7 @@ done
 echo 'enter git repo'${GIT_REPO}
 cd $GIT_REPO
 echo 'start git pull...'
-# git pull
+git pull
 echo 'git pull done!'
 
 # restart server

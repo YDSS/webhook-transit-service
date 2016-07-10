@@ -5,7 +5,8 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const execFile = require('child_process').execFile;
+const thunkify = require('thunkify');
+const execFile = thunkify(require('child_process').execFile);
 
 const koa = require('koa');
 const logger = require('koa-logger');
@@ -38,7 +39,6 @@ app.use(function* (next) {
 app.use(function* (next) {
     try {
         // payload is a string
-        console.log(123);
         let payload = JSON.parse(this.request.body.payload);
         let pusher = payload.pusher;
         let gitRepoName = payload.repository.name;
@@ -51,27 +51,13 @@ app.use(function* (next) {
             return;
         }
         
-        console.log('before exec');
-        console.log(this.status);
-        execFile(
+        let stdout = yield execFile(
             path.join(__dirname, './bin/git_opt'), 
             // no need space between option and value
-            [`-d${gitRepoName}`], 
-            (err, stdout, stderr) => {
-                console.log(this.status);
-                if (err) {
-                    this.status = 500;
-                    this.body = 'exec shell failed';
-
-                    console.log(err);
-                }
-                console.log(this.status);
-                console.log(this.body);
-
-                // this.body = 'update success'
-                console.log(stdout);
-            }
+            [`-d${gitRepoName}`]
         );
+        console.log(stdout.join('\n'));
+        this.body = 'update success';
     } catch (e) {
         console.error(e);
     }
